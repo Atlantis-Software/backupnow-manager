@@ -1,0 +1,21 @@
+{
+  "identity": "hosts",
+  "tableName": "hosts",
+  "connection": "default",
+  "attributes": {
+    "id": {
+      "type": "integer",
+      "autoIncrement": true,
+      "primaryKey": true
+    },
+    "name": {
+      "type": "string"
+    },
+    "host": {
+      "type": "string"
+    },
+    "key": {
+      "type": "string"
+    }
+  }
+}

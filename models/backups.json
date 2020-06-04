@@ -1,0 +1,33 @@
+{
+  "identity": "backups",
+  "tableName": "backups",
+  "connection": "default",
+  "attributes": {
+    "id": {
+      "type": "integer",
+      "autoIncrement": true,
+      "primaryKey": true
+    },
+    "name": {
+      "type": "string"
+    },
+    "host": {
+      "type": "string"
+    },
+    "port": {
+      "type": "integer"
+    },
+    "type": {
+      "type": "string"
+    },
+    "username": {
+      "type": "string"
+    },
+    "password": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string"
+    }
+  }
+}

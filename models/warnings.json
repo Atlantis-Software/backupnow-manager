@@ -1,0 +1,26 @@
+{
+  "identity": "warnings",
+  "tableName": "warnings",
+  "connection": "default",
+  "attributes": {
+    "id": {
+      "type": "integer",
+      "autoIncrement": true,
+      "primaryKey": true
+    },
+    "desc": {
+      "type": "string"
+    },
+    "host": {
+      "model": "hosts",
+      "columnName": "hostId",
+      "required": true
+    },
+    "state": {
+      "type": "string"
+    },
+    "date": {
+      "type": "datetime"
+    }
+  }
+}
