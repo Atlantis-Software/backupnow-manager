@@ -19,7 +19,7 @@ app.route('warnings', {
             }
         }
     }, function(req) {
-        var sort = req.data.sort || {column: "start", direction: "DESC"};
+        var sort = req.data.sort || {column: "date", direction: "DESC"};
         var filter = req.data.filter || {};
         var fields = [
           "id",

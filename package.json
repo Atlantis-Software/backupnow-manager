@@ -1,12 +1,12 @@
 {
   "name": "@backupnow/manager",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1-beta.1",
   "description": "backup now server manager",
   "scripts": {},
   "author": "Alexandre Tiertant",
   "homepage": "",
   "dependencies": {
-    "@backupnow/webif": "~0.0.1-beta.0",
+    "@backupnow/webif": "~0.0.1-beta.1",
     "@synapps/core": "~1.1.0-rc.1",
     "@synapps/orm": "~0.0.3",
     "@synapps/session": "~0.0.2",

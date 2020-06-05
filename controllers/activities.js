@@ -30,7 +30,7 @@ app.route('activities', {
           "end",
           "initiator"
         ];
-        var pagination = new Pagination(req.db, req.session.user, "backups", filter , fields, sort);
+        var pagination = new Pagination(req.db, req.session.user, "activities", filter , fields, sort);
         pagination.setPage(req.data.page);
         pagination.setPageCount(req.data.pageCount || PAGECOUNT);
         pagination.getPage(function(err, page) {
