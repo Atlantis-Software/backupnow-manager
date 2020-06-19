@@ -1,3 +1,5 @@
+var asynk = require('asynk');
+
 module.exports = function(worker, db) {
   db(worker, function(err) {
     if (err) {
@@ -6,7 +8,7 @@ module.exports = function(worker, db) {
     var scheduled = {};
 
     var execPlan = function(plan) {
-      db.activities.create({
+      worker.db.activities.create({
         "desc": "execute backup plan " + plan.name,
         "host": plan.host.id,
         "state": "running",
@@ -27,19 +29,19 @@ module.exports = function(worker, db) {
         order.fail(function(err) {
           var failDate = new Date();
           asynk.add(function(cb) {
-            db.activities.update({
+            worker.db.activities.update(activitie.id, {
               "state": "fail",
               "end": failDate
             }, cb);
           }).add(function(cb) {
-            db.warnings.create({
+            worker.db.warnings.create({
               "desc": "backup plan failure " + plan.name + " " + err,
               "host": plan.host.id,
               "state": "CRITICAL",
               "date": failDate
             }, cb);
           }).add(function(cb) {
-            db.plans.update(plan.id, {
+            worker.db.plans.update(plan.id, {
               state: 'fail',
               last: failDate
             }, cb);
@@ -55,12 +57,12 @@ module.exports = function(worker, db) {
         order.done(function() {
           var doneDate = new Date();
           asynk.add(function(cb) {
-            db.activities.update({
+            worker.db.activities.update(activitie.id, {
               "state": "ok",
               "end": doneDate
             }, cb);
           }).add(function(cb) {
-            db.plans.update(plan.id, {
+            worker.db.plans.update(plan.id, {
               state: 'ok',
               last: doneDate
             }, cb);
@@ -92,10 +94,11 @@ module.exports = function(worker, db) {
           return d;
         };
         // should today?
-        if (week[d.getDay()] && (h > d.getHours() || (h === d.getHours() && m >= d.getMinutes()))) {
+        if (week[d.getDay()] && (h > d.getHours() || (h === d.getHours() && m > d.getMinutes()))) {
           next = new Date();
           next.setHours(h);
           next.setMinutes(m);
+          next.setSeconds(0);
           next.setMilliseconds(0);
         } else {
           for (var i = d.getDay() + 1; i < d.getDay() + 6; i++) {
@@ -106,6 +109,7 @@ module.exports = function(worker, db) {
               next = nextDay(i);
               next.setHours(h);
               next.setMinutes(m);
+              next.setSeconds(0);
               next.setMilliseconds(0);
               break;
             }
@@ -115,7 +119,8 @@ module.exports = function(worker, db) {
           var ms = next.getTime() - d.getTime();
           worker.debug('Plan ' + plan.name + ' scheduled at ', next);
           scheduled[plan.id] = setTimeout(function() {
-              execPlan(plan);
+            schedulePlan(plan);
+            execPlan(plan);
           }, ms);
         }
     };
